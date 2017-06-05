@@ -1,38 +1,52 @@
-/*
- * MIT License
- * Copyright (c) 2017 Gymnazium Nad Aleji
- * Copyright (c) 2017 Vojtech Horky
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- * 
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- * 
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-
 package cz.alisma.alej.text.wrapping;
-
 import java.util.Scanner;
 
 public class WrapAndAlign {
-    private static final int MAX_WIDTH = 50;
+    protected static int MAX_WIDTH = 30; //default width
 
     public static void main(String[] args) {
-        Scanner input = new Scanner(System.in);
+    	Scanner input = new Scanner(System.in);
         ParagraphDetector pd = new ParagraphDetector(input);
         Aligner aligner = new LeftAligner();
+        String typeOfAlignment = ""; //default alignment is to left - not compulsory
+        String widthChanger = "-w";
+        String widthChangerChecker[] = new String[2];
+        String widthValue = "";
+        
+        try {
+        	typeOfAlignment = args[0];
+        	widthChangerChecker[0] = args[0];
+        	widthChangerChecker[1] = args[1];
+        } catch (ArrayIndexOutOfBoundsException e) {
+        
+        }
+        
+        if (typeOfAlignment.equals("--justify")) {
+        	aligner = new JustifyAligner();
+        } if (typeOfAlignment.equals("--center")) {
+        	aligner = new CenterAligner();
+        } if (typeOfAlignment.equals("--right")) {
+        	aligner = new RightAligner();
+        } 
+	    try {
+	    	if (widthChangerChecker[0].equals(widthChanger)) {
+	        	widthValue = args[1];
+	        	int i = Integer.parseInt(widthValue);
+	        	WrapAndAlign.MAX_WIDTH = i;
+	        } if (widthChangerChecker[1].equals(widthChanger)) {
+	        	try {
+		        	widthValue = args[2];
+		        	widthValue = args[2];
+		        	int i = Integer.parseInt(widthValue);
+		        	WrapAndAlign.MAX_WIDTH = i;
+	        	} catch (ArrayIndexOutOfBoundsException e) {
+	        		System.out.println("Write your requested width!\n\n");
+	        		throw e;
+	        	}
+	    	}
+	    } catch (NullPointerException e) {
+	    	
+	    }
 
         while (pd.hasNextParagraph()) {
             Paragraph para = pd.nextParagraph();
@@ -43,6 +57,6 @@ public class WrapAndAlign {
             }
             line.flush();
             System.out.println();
-        }
+        }  
     }
 }
