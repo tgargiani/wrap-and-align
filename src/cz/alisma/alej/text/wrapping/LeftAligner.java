@@ -30,25 +30,24 @@ import java.util.List;
 public class LeftAligner implements Aligner {
 	
 	int width;
-    public LeftAligner(int width) {
+	public LeftAligner(int width) {
 		this.width = width;
 	}
 
 	@Override
-    public String format(List<String> words) {
-        StringBuilder result = new StringBuilder();
+	public String format(List<String> words) {
+		StringBuilder result = new StringBuilder();
         
-        boolean first = true;
-        for (String w : words) {
-            if (!first) {
-                result.append(" ");
-            } else {
-                first = false;
-            }
-            result.append(w);
-        }
-        
-        return result.toString();
-    }
-
+		boolean first = true;
+		for (String w : words) {
+			if (!first) {
+				result.append(" ");
+			} else {
+				first = false;
+			}
+			result.append(w);
+		}
+		
+		return result.toString();
+	}
 }
